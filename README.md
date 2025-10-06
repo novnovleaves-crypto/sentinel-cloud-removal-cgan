@@ -13,16 +13,51 @@ The core of this project is a Pix2Pix model, a cGAN architecture designed for im
 
 ## Results: From Mid-term to Final
 
-A significant part of this project involved iterative refinement based on mid-term feedback. The initial results suffered from common GAN training issues and data preprocessing artifacts. The final model demonstrates a substantial improvement in both visual quality and quantitative metrics.
+The project underwent iterative refinement based on mid-term feedback. The initial results suffered from common GAN training issues such as checkerboard artifacts, `nodata` contamination, and unstable training dynamics. After improving data preprocessing, paired normalization, and fine-tuning the Pix2Pix model, the final results show a substantial improvement in both visual quality and quantitative metrics.
 
-| Mid-term Result (Initial Attempt) | Final Result (After Improvements) |
-| :---: | :---: |
-|  |  |
-| **Issues:** Checkerboard artifacts, `nodata` pixel contamination, poor generalization. | **Improvements:** Visually plausible results, correct color distribution, and sharp details. |
+### Qualitative Results
 
-**Final Quantitative Metrics (on test set):**
-*   **PSNR:** 25.22 dB (± 8.53)
-*   **SSIM:** 0.65 (± 0.27)
+Visual inspection demonstrates that the final Pix2Pix model effectively removes clouds and reconstructs plausible land surface features. Both thin and thick cloud regions are addressed, and generated landscapes preserve structural patterns such as field boundaries, vegetation patches, and water bodies.
+
+* **Thick clouds:** Generated textures are slightly smoother, but overall land cover patterns are reasonable.
+* **Thin clouds:** High-frequency details, such as edges and small features, are well-preserved.
+* **Color consistency:** Generated images maintain realistic colors and brightness relative to the ground truth.
+
+| Cloudy Input | Generated Output | Ground Truth |
+| :---: | :---: | :---: |
+| ![Cloudy](images/cloudy_sample.png) | ![Generated](images/generated_sample.png) | ![Clear](images/clear_sample.png) |
+
+### Quantitative Results
+
+The model performance is evaluated using **Peak Signal-to-Noise Ratio (PSNR)** and **Structural Similarity Index (SSIM)**, computed only over valid (non-`nodata`) pixels to avoid bias.
+
+| Metric | Test Set Average | Standard Deviation |
+| :--- | :---: | :---: |
+| PSNR (dB) | 22.59 | 6.80 |
+| SSIM | 0.59 | 0.24 |
+
+* **PSNR:** Indicates moderate fidelity to the ground truth. Higher PSNR corresponds to better reconstruction of obscured regions. The high standard deviation reflects variability across images, particularly those with very dense clouds.
+* **SSIM:** Confirms structural similarity preservation. Dense cloud regions reduce fine-detail reconstruction, which is expected in this ill-posed problem.
+
+### Diagnostic Analysis
+
+* The histograms show that generated images match the overall brightness and color distribution of ground truth images.
+* Slight smoothing occurs in areas fully obscured by clouds, consistent with the model’s inability to perfectly infer missing details.
+* Early versions suffered from dark outputs or compressed dynamic ranges, corrected by paired normalization and cropping to common valid regions.
+
+![Histogram Comparison](images/figure3.png)  
+*Histogram comparison between generated outputs (center) and ground truth (right) showing reasonable spectral reconstruction.*
+
+### Summary of Improvements
+
+| Aspect | Initial Model | Final Model |
+| :--- | :---: | :---: |
+| Cloud Removal Quality | Artifacts, incomplete removal | Visually plausible, cloud-free output |
+| Structural Preservation | Poor, blurred edges | Clear field boundaries and textures |
+| Color & Brightness | Inconsistent | Correct and realistic |
+| Training Stability | Unstable, slow convergence | Stable, smooth learning curve |
+
+* **Key takeaway:** The combination of robust preprocessing, paired normalization, and careful tuning of Pix2Pix hyperparameters allows the model to produce realistic cloud-free images, providing a strong foundation for downstream tasks like land cover classification or change detection.
 
 *(Note: These are preliminary results from a 10-epoch run. The final report will include results from the full 200-epoch training.)*
 
