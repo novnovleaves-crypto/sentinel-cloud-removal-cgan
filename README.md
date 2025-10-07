@@ -23,9 +23,6 @@ Visual inspection demonstrates that the final Pix2Pix model effectively removes 
 * **Thin clouds:** High-frequency details, such as edges and small features, are well-preserved.
 * **Color consistency:** Generated images maintain realistic colors and brightness relative to the ground truth.
 
-| Cloudy Input | Generated Output | Ground Truth |
-| :---: | :---: | :---: |
-
 ### Quantitative Results
 
 The model performance is evaluated using **Peak Signal-to-Noise Ratio (PSNR)** and **Structural Similarity Index (SSIM)**, computed only over valid (non-`nodata`) pixels to avoid bias.
@@ -43,9 +40,6 @@ The model performance is evaluated using **Peak Signal-to-Noise Ratio (PSNR)** a
 * The histograms show that generated images match the overall brightness and color distribution of ground truth images.
 * Slight smoothing occurs in areas fully obscured by clouds, consistent with the model’s inability to perfectly infer missing details.
 * Early versions suffered from dark outputs or compressed dynamic ranges, corrected by paired normalization and cropping to common valid regions.
-
-![Histogram Comparison](images/figure3.png)  
-*Histogram comparison between generated outputs (center) and ground truth (right) showing reasonable spectral reconstruction.*
 
 ### Summary of Improvements
 
