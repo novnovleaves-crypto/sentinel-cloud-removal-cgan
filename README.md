@@ -25,7 +25,6 @@ Visual inspection demonstrates that the final Pix2Pix model effectively removes 
 
 | Cloudy Input | Generated Output | Ground Truth |
 | :---: | :---: | :---: |
-| ![Cloudy](images/cloudy_sample.png) | ![Generated](images/generated_sample.png) | ![Clear](images/clear_sample.png) |
 
 ### Quantitative Results
 
